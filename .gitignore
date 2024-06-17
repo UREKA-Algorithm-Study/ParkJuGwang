@@ -1,5 +1,8 @@
 ### IntelliJ IDEA ###
 out/
+.idea
+.gitignore
+.java_baekjoon.iml
 !**/src/main/**/out/
 !**/src/test/**/out/
 
