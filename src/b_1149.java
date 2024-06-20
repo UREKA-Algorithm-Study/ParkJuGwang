@@ -1,47 +1,39 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 public class b_1149 {
+
     final static int Red = 0;
     final static int Green = 1;
     final static int Blue = 2;
 
-    static int[][] Cost;
-    static int[][] DP;
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        Scanner in = new Scanner(System.in);
+        int N = Integer.parseInt(br.readLine());
 
-        int N = in.nextInt();
+        int[][] Cost = new int[N][3];
 
-        Cost = new int[N][3];
-        DP = new int[N][3];
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
 
-        for(int i = 0; i < N; i++) {
-            Cost[i][Red] = in.nextInt();
-            Cost[i][Green] = in.nextInt();
-            Cost[i][Blue] = in.nextInt();
+            Cost[i][Red] = Integer.parseInt(st.nextToken());
+            Cost[i][Green] = Integer.parseInt(st.nextToken());
+            Cost[i][Blue] = Integer.parseInt(st.nextToken());
+
         }
 
-        // DP의 첫번째 값(집)은 각 색상비용의 첫번째 값으로 초기화
-        DP[0][Red] = Cost[0][Red];
-        DP[0][Green] = Cost[0][Green];
-        DP[0][Blue] = Cost[0][Blue];
-
-
-        System.out.print(Math.min(Paint_cost(N- 1, Red), Math.min(Paint_cost(N - 1, Green), Paint_cost(N - 1, Blue))));
-    }
-
-    static int Paint_cost(int N, int color) {
-        if (DP[N][color] == 0) {
-            if (color == Red) {
-                DP[N][Red] = Math.min(Paint_cost(N - 1, Green), Paint_cost(N - 1, Blue)) + Cost[N][Red];
-            } else if (color == Green) {
-                DP[N][Green] = Math.min(Paint_cost(N - 1, Red), Paint_cost(N - 1, Blue)) + Cost[N][Green];
-            } else {
-                DP[N][Blue] = Math.min(Paint_cost(N - 1, Red), Paint_cost(N - 1, Green)) + Cost[N][Blue];
-            }
+        for (int i = 1; i < N; i++) {
+            Cost[i][Red] += Math.min(Cost[i - 1][Green], Cost[i - 1][Blue]);
+            Cost[i][Green] += Math.min(Cost[i - 1][Red], Cost[i - 1][Blue]);
+            Cost[i][Blue] += Math.min(Cost[i - 1][Red], Cost[i - 1][Green]);
         }
-        return DP[N][color];
+
+        System.out.println(Math.min(Math.min(Cost[N - 1][Red], Cost[N - 1][Green]), Cost[N - 1][Blue]));
     }
+
 }
