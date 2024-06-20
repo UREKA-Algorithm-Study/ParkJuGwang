@@ -1,34 +1,37 @@
-import java.util.Scanner;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
 
 public class b_2493 {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args)  throws NumberFormatException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        Stack<Integer> stack = new Stack<>();
-        int N = sc.nextInt();
+        Stack<int[]> stack = new Stack<>();
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < N; i++) {
-            int n = sc.nextInt();
+        for (int i = 1; i <= N; i++) {
+            int n = Integer.parseInt(st.nextToken());
             if (stack.isEmpty()) {
-                stack.push(n);
-                sb.append(0).append(" ");
-            } else {
+                sb.append(0 + " ");
+                stack.push(new int []{i , n});
+            } else  {
                 while (true) {
-                    if (stack.isEmpty()) {
-                        stack.push(n);
-                        sb.append(0).append(" ");
+                    if (stack.peek()[1] < n) {
+                        stack.pop();
+                    } else if (stack.peek()[1] >= n) {
+                        sb.append(stack.peek()[0] + " ");
+                        stack.push(new int[]{i , n});
                         break;
                     }
-
-                    if (stack.peek() >= n) {
-
-                    }else if (stack.peek() < n) {
-                        stack.pop();
+                    if (stack.isEmpty()) {
+                        sb.append(0 + " ");
+                        stack.push(new int[]{i , n});
+                        break;
                     }
                 }
             }
         }
+        System.out.println(sb);
     }
 }
